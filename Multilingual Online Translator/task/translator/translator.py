@@ -6,22 +6,23 @@ ef = "english-french/"
 fe = "french-english/"
 
 
-def display_results(page):
+def display_results(page, language):
     soup = BeautifulSoup(page.content, 'html.parser')
-    # print(soup.prettify())
     words = soup.find_all('span', {'class': 'display-term'})
-    word_list = []
+    print("200 OK")
+    print("\n{} translations:".format("French" if language == "fr" else "English"))
     for w in words:
-        word_list.append(w.text)
+        print(w.text)
+
+    print("\n{} examples:".format("French" if language == "fr" else "English"))
 
     sentences = soup.find('section', {'id': 'examples-content'}).findAll('span', {'class': 'text'})
-    sentence_list = []
+    i = 1
     for s in sentences:
-        sentence_list.append(s.text.strip())
-
-    print(word_list)
-    print(sentence_list)
-
+        print(s.text.strip())
+        if i % 2 == 0:
+            print()
+        i += 1
 
 def main():
 
@@ -39,9 +40,7 @@ def main():
         address = url + ef + word
     page = requests.get(address, headers=headers)
     if page.status_code == 200:
-        print("200 OK")
-        print("Translations")
-        display_results(page)
+        display_results(page, language)
     else:
         print("Something went wrong. Perhaps bad input. Try again.")
         main()
