@@ -19,29 +19,40 @@ languages = ["placeholder",
              "Turkish"]
 
 
-def display_results(word, i, j):
+def write_results(word, i, j):
 
     headers = {'User-Agent': 'Mozilla/5.0'}
     page = requests.get(url + languages[i].lower() + "-" + languages[j].lower() + "/" + word, headers=headers)
     if page.status_code == 200:
+        file = open(word + '.txt', 'a', encoding='utf-8')
         soup = BeautifulSoup(page.content, 'html.parser')
         words = soup.find_all('span', {'class': 'display-term'})
 
-        print("\n{} translations:".format(languages[j]))
+        # print("\n{} translations:".format(languages[j]))
+        file.write("\n{} translations:\n".format(languages[j]))
         for w in words:
-            print(w.text)
+            # print(w.text)
+            file.write(w.text + "\n")
+            break
 
-        print("\n{} examples:".format(languages[j]))
+        # print("\n{} examples:".format(languages[j]))
+        file.write("\n{} example:\n".format(languages[j]))
 
         sentences = soup.find('section', {'id': 'examples-content'}).findAll('span', {'class': 'text'})
         i = 1
         for s in sentences:
-            print(s.text.strip(), end="")
+            file.write(s.text.strip())
+            # print(s.text.strip(), end="")
             if i % 2 == 0:
-                print("\n")
+                # print("\n")
+                file.write("\n")
+                break
             else:
-                print(":")
+                # print(":")
+                file.write(":\n")
             i += 1
+        file.close()
+
     else:
         print("Something went wrong. Perhaps bad input. Try again.")
 
@@ -71,9 +82,16 @@ def main():
     word = input("Type the word you want to translate:")
 
     if j == 0:
-        pass
+        for k in range(1, len(languages)):
+            if k != i:
+                write_results(word, i, k)
     else:
-        display_results(word, i, j)
+        write_results(word, i, j)
+
+    file = open(word + '.txt', 'r', encoding='utf-8')
+    for line in file:
+        print(line, end="")
+    file.close()
 
 
 if __name__ == "__main__":
