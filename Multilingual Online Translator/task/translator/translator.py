@@ -1,3 +1,4 @@
+import sys
 import requests
 from bs4 import BeautifulSoup
 
@@ -28,27 +29,21 @@ def write_results(word, i, j):
         soup = BeautifulSoup(page.content, 'html.parser')
         words = soup.find_all('span', {'class': 'display-term'})
 
-        # print("\n{} translations:".format(languages[j]))
         file.write("\n{} translations:\n".format(languages[j]))
         for w in words:
-            # print(w.text)
             file.write(w.text + "\n")
             break
 
-        # print("\n{} examples:".format(languages[j]))
         file.write("\n{} example:\n".format(languages[j]))
 
         sentences = soup.find('section', {'id': 'examples-content'}).findAll('span', {'class': 'text'})
         i = 1
         for s in sentences:
             file.write(s.text.strip())
-            # print(s.text.strip(), end="")
             if i % 2 == 0:
-                # print("\n")
                 file.write("\n")
                 break
             else:
-                # print(":")
                 file.write(":\n")
             i += 1
         file.close()
@@ -56,30 +51,24 @@ def write_results(word, i, j):
     else:
         print("Something went wrong. Perhaps bad input. Try again.")
 
-
-def get_input(prompt):
-
-    j = -1
-    while True:
-        language = input(prompt)
-        try:
-            j = int(language)
-            if j >= 0 and j < len(languages) - 1:
-                return j
-        except:
-            pass
-        print("bad input! try again")
-
 def main():
 
-    print("Hello, welcome to the translator. Translator supports:")
-    for i in range(1, len(languages)):
-        print(i, ". ", languages[i], sep="")
+
+    args = sys.argv
+    if len(args) != 4:
+        print("This programm requires 3 arguments. Try again!")
+        sys.exit(1)
 
 
-    i = get_input("Type the number of your language:")
-    j = get_input("Type the number of a language you want to translate to or '0' to translate to all languages:")
-    word = input("Type the word you want to translate:")
+    word = args[3]
+    for k in range(1, len(languages)):
+        if args[1].capitalize() == languages[k]:
+            i = k
+        if args[2].capitalize() == languages[k]:
+            j = k
+
+    if args[2] == "all":
+        j = 0
 
     if j == 0:
         for k in range(1, len(languages)):

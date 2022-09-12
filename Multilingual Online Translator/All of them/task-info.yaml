@@ -138,9 +138,9 @@ files:
     if __name__ == '__main__':
         TranslatorTest('translator.translator').run_tests()
   learner_created: false
-feedback_link: https://hyperskill.org/projects/99/stages/546/implement#comment
+feedback_link: https://hyperskill.org/learn/step/8973#comment
 status: Solved
 feedback:
   message: Congratulations!
   time: Sun, 11 Sep 2022 17:02:41 UTC
-record: -1
+record: 4
