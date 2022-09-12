@@ -183,6 +183,12 @@ files:
     if __name__ == '__main__':
         TranslatorTest('translator.translator').run_tests()
   learner_created: false
+- name: what.txt
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/8976#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Mon, 12 Sep 2022 12:52:58 UTC
 record: -1
